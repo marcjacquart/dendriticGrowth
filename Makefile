@@ -1,8 +1,8 @@
-#Makefile for the Simulation Project: From tutorial https://www.cs.bu.edu/teaching/cpp/writing-makefiles/
+#Makefile for the Simulation Project: (From tutorial https://www.cs.bu.edu/teaching/cpp/writing-makefiles/)
 
 #Variables:
 CXX =g++
-CXXFLAGS = -std=c++11 -Wall -g 
+CXXFLAGS = -std=c++17 -Wall -g 
 
 
 #Targets:
@@ -18,8 +18,10 @@ System.o: System.cpp System.h Atom.h
 
 Atom.o: Atom.cpp Atom.h
 	$(CXX) $(CXXFLAGS) -c Atom.cpp
+
+
 	
-#Cmd qu'on aimerait que ca fasse:	
+#Command we want the makefile to execute:	
 # g++ -c main.cpp
 # g++ -c Atom.cpp
 # g++ -c System.cpp
