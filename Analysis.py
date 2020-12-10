@@ -80,10 +80,39 @@ def plotDistance():								# Compute the distance between each pair of atoms, no
 	print("Plotting in histogram the results...")
 	print("Number of data to plot: "+str(len(distanceTab)))
 	figDist=plt.figure()
-	plt.hist(distanceTab, bins=212)
+
+	n, bins, patches=plt.hist(distanceTab, bins=212)		# Put everything in an histogram
+
+	meanBins=[]												# Histogram gives values of bin border, manually computes the mean value of each bin
+	k=0
+	while k<(len(bins)-1):
+		meanBins.append((bins[k+1]+bins[k])/2.0)
+		k=k+1
+
+	
+
+	# Delete linear part:
+	maxValue = max(n)										# Find the maximum value (to cut the linear part)
+	maxIndex = np.argmax(n)									# And its index
+	i=0
+	while i<len(n):
+		if i%10==0:
+			print (i)
+		n[i]=n[i]-(maxValue/meanBins[maxIndex])*meanBins[i]	# Substract the linear slope going trough (0,0) and the maximum to better see the peak
+		i+=1
+
 	plt.xlabel("distance [Å]")
 	plt.ylabel("Counts [-]")
-	plt.show()
+	plt.show()												# Plot before the cut of linear part
+	
+	plot2=plt.figure()
+	plt.plot(meanBins, n,'k.')
+	plt.xlabel("distance [Å]")
+	plt.ylabel("Counts [-]")
+	plt.show()												# Plot after the cut of linear part
+
+	
+
 
 def plotEvolution(): 							# Old way to plot the evolution of each print of the system with succesives plots, better with gif
 	computeAllFramesTab()
@@ -253,8 +282,8 @@ def fractalDimension():							# Compute the fractal dimension D using N~r^D => l
 
 # Command to comment/uncomment to select the analysis
 
-fractalDimension()		# Compute the fractal dimension D using N~r^D => linear fit on loglog plot
+#fractalDimension()		# Compute the fractal dimension D using N~r^D => linear fit on loglog plot
 #plotTime()				# For performance analysis: plot the totoal time and the time between two prints
 #plotGif()				# Plot a gif animation with all sucessive print: see the deposition in time
-plotLast()				# Plot only the last configuration of the system
-#plotDistance()			# Compute the distance between each pair of atoms, not used in the end, lattice not big enough to have statistically significant results
+#plotLast()				# Plot only the last configuration of the system
+plotDistance()			# Compute the distance between each pair of atoms, not used in the end, lattice not big enough to have statistically significant results
